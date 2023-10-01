@@ -1,3 +1,5 @@
+#This project utilizes the follow Superstore data: 
+
 CREATE TABLE superstore (
     item_id INTEGER PRIMARY KEY,
     item_name TEXT,
@@ -24,3 +26,22 @@ VALUES
     (13, 'Slow Cooker', 'Appliances', 49.95, 30, 4.7),
     (14, 'Cutlery Set', 'Kitchen Supplies', 34.50, 40, 4.4),
     (15, 'Cozy Throw Blanket', 'Furnishings', 24.99, 100, 4.2);
+
+# Used a SELECT statement to order the Superstore items by price.
+SELECT *
+FROM superstore
+ORDER BY price desc;
+
+# Used ROUND and AVG to show the average cost of products from the Superstore.
+SELECT ROUND (AVG(price),2)
+FROM superstore;
+
+# Used MIN function to select the least expensive Kitchen Supply item you can purchase. 
+SELECT MIN (price)
+FROM superstore
+WHERE category="Kitchen Supplies";
+
+# Used WHERE function to determine how many Smart LED TVs the Superstore has in stock.
+SELECT stock_quantity, item_name
+FROM superstore
+WHERE item_name="Smart LED TV";
