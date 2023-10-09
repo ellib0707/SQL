@@ -1,0 +1,92 @@
+# This utilized the following Famous Singer Dataset: 
+
+CREATE TABLE singers (
+    singer_id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER);
+
+INSERT INTO singers (name,age)
+VALUES
+    ('Morgan Wallen', 30),
+    ('Dolly Parton', 77),
+    ('Blake Shelton', 47),
+    ('Reba McEntire', 68),
+    ('Luke Combs', 33),
+    ('Jon Bon Jovi', 61),
+    ('Paul McCartney', 81),
+    ('Dave Grohl', 54),
+    ('Mick Jagger', 80),
+    ('Cardi B', 30),
+    ('Drake', 36),
+    ('Eminem', 50),
+    ('Snoop Dog', 51),
+    ('Lainey Wilson', 31),
+    ('Bruce Springsteen',71);
+    
+CREATE TABLE singer_details (
+  singer_id INTEGER PRIMARY KEY,
+  song TEXT,
+  genre TEXT);
+  
+ INSERT INTO singer_details (song, genre)
+ VALUES
+('Sand In My Boots', 'country'),
+('Jolene', 'country'),
+('Austin', 'country'),
+('Fancy', 'country'),
+('Forever After All', 'country'),
+('You Give Love A Bad Name', 'rock'),
+('Yellow Submarine', 'rock'),
+('Best of You', 'rock'),
+('Start Me Up', 'rock'),
+('Up', 'rap'),
+('Laugh Now Cry Later', 'rap'),
+('Not Afraid', 'rap'),
+('Drop It Like Its Hot', 'rap'),
+('Heart Like A Truck', 'country'),
+('Born To Run', 'rock');
+
+#Analysis:
+
+#List which song each singer sings and in alphabetical order by singer's name. 
+SELECT singers.name, singer_details.song
+FROM singers
+LEFT JOIN singer_details
+ON singers.singer_id = singer_details.singer_id
+ORDER BY name;
+
+#Determine who the yougest singer is in the genre of rock. 
+SELECT singers.name,
+MIN (age)
+FROM singers
+LEFT JOIN singer_details
+ON singers.singer_id=singer_details.singer_id 
+WHERE genre='rock'
+ORDER BY singers.name;
+
+#Determine how many singers are in each genre.
+SELECT singer_details.genre,
+COUNT (singer_details.genre)
+FROM singers
+LEFT JOIN singer_details
+ON singers.singer_id=singer_details.singer_id 
+GROUP BY singer_details.genre;
+
+#Determine who the oldest singer is in the genre of country.
+SELECT singers.name,
+MAX (age)
+FROM singers
+LEFT JOIN singer_details
+ON singers.singer_id=singer_details.singer_id
+WHERE genre='country'
+ORDER BY singers.name;
+
+#Determine which singer sings the song "Forever After All".
+SELECT singers.name
+FROM singers
+LEFT JOIN singer_details
+ON singers.singer_id=singer_details.singer_id
+WHERE song='Forever After All'
+ORDER BY singers.name;
+
+
