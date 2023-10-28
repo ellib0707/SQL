@@ -1,0 +1,60 @@
+#This analysis utilized the following Kitchen Connection dataset:
+
+CREATE TABLE kitchen_connection (
+    product_id INTEGER PRIMARY KEY,
+    product_name TEXT,
+    category TEXT,
+    wholesale_cost DECIMAL (10,2),
+    sell_price DECIMAL (10,2),
+    inventory INTEGER,
+    sold INTEGER);
+    
+INSERT INTO kitchen_connection (product_name, category, wholesale_cost, sell_price, inventory, sold)
+VALUES
+('Mixer', 'Baking', 59.89, 120.98, 6, 2),
+('Cake Stand', 'Baking', 21.05, 40.18, 8, 4),
+('Spatula Set', 'Baking', 12.39, 24.99, 8, 7),
+('Cookie Sheet', 'Baking', 10.15, 20.87, 12, 8),
+('Cupcake Pan', 'Baking', 12.15, 22.89, 12, 9),
+('Steel Tongs', 'Grilling', 9.87, 19.25, 20, 13),
+('Meat Thermometer', 'Grilling', 8.99, 17.15, 24, 9),
+('Meat Shredder', 'Grilling', 4.25, 12.05, 20, 6),
+('Barbeque Cutting Board', 'Grilling', 13.25, 28.17, 9, 6),
+('Barbeque Gloves', 'Grilling', 6.50, 13.29, 14, 5),
+('Blender', 'Entertaining', 27.89, 60.03, 8, 2),
+('Margarita Glass Set', 'Entertaining', 13.99, 27.15, 6, 2),
+('Nugget Ice Machine', 'Entertaining', 100.50, 210.19, 8, 2),
+('Lime Squeezer', 'Entertaining', 5.60, 11.19, 10, 5),
+('Salt Rimmer', 'Entertaining', 3.15, 6.50, 8, 3);
+
+# Use a SELECT statement to order the products from least to greatest sell price.
+SELECT product_name, sell_price
+FROM kitchen_connection
+ORDER BY sell_price asc;
+
+# Use a SELECT statement with a mathematical operator to determine which products yield a profit of $20 or more. 
+SELECT product_name, wholesale_cost, sell_price
+FROM kitchen_connection
+WHERE sell_price - wholesale_cost >= 20.00
+ORDER BY product_name asc;
+
+#Use a SELECT statement with a HAVING clause to determine which grilling products have a sell price of $14 or less. 
+SELECT category, product_name, sell_price
+FROM kitchen_connection
+WHERE category='Grilling'
+GROUP BY product_name
+HAVING MAX(sell_price) <14;
+
+#Use a SELECT statement with a mathematical operator to determine which products have 3 or less units currently in stock.
+SELECT inventory, sold, product_name
+FROM kitchen_connection
+WHERE inventory - sold <=3
+ORDER BY product_name asc;
+
+#Use an AND statement within a WHERE statement to determine items with a stock of 4 or more, a wholesale cost of $10 or more, and listed in descending order by wholesale cost.
+SELECT product_name, wholesale_cost, sell_price, inventory, sold
+FROM kitchen_connection
+WHERE inventory - sold >=4
+AND wholesale_cost >=10
+ORDER BY wholesale_cost desc;
+
