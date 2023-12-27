@@ -1,0 +1,78 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Next, I created a table to insert Spotify data into.
+# Lastly, I performed analytics on the data using SQL.
+
+#Creating the table:
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#After creating the table, I inserted the Spotify Data .csv into it.
+
+#Finally, I reviewed the data using the following SQL:
+
+#I determined the average tempo, length of track, and popularity by artist and track.
+SELECT
+artist_name
+,track_name
+,avg(tempo)
+,avg(duration_ms)
+,avg(popularity)
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name, track_name;
+
+#I wanted to know how many tracks the artist 'Olivia Rodrigo' has in the top 50 of the Spotify list.
+SELECT
+artist_name
+,track_name
+FROM BIT_DB.Spotifydata
+WHERE artist_name is 'Olivia Rodrigo'
+GROUP BY track_name;
+
+#I wanted to select only the artist that had instruments included in their tracks.
+SELECT
+artist_name
+,track_name
+,instrumentalness
+FROM BIT_DB.Spotifydata
+WHERE instrumentalness >0
+GROUP BY artist_name;
+
+#I determined which tracks may be popular in dance clubs based on popularity, high energy, and high liveness.
+SELECT
+artist_name
+,track_name
+,popularity
+,energy
+,liveness
+FROM BIT_DB.Spotifydata
+WHERE energy >.6 and liveness >.3 
+GROUP BY artist_name
+ORDER BY popularity desc;
+
+#I wanted to know which artist had 6 or more keys in their tracks.
+SELECT
+artist_name
+,track_name
+,song_key
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+HAVING song_key>=6
+ORDER BY song_key asc;
