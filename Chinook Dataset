@@ -1,0 +1,58 @@
+#In this SQL, I am querying a dataset called chinook, which represents a digital media store and includes tables for artists, albums, media tracks, invoices, and customers. 
+
+#Create a query that includes all the tracks, the album names, and the genres.
+SELECT t.Name AS 'Track Name'
+, a.Title AS 'Album Title'
+, g.Name AS 'Genre'
+FROM chinook.tracks t
+JOIN chinook.Albums a 
+on a.AlbumId = t.AlbumId
+JOIN chinook.Genres g
+on g.GenreId = t.GenreID;
+
+#Determine the customers that are only from France.
+SELECT * FROM chinook.customers 
+WHERE Country = "France" ;
+
+#Determine how many invoices there were in 2012.
+SELECT COUNT(*)
+FROM chinook.Invoices
+WHERE InvoiceDate BETWEEN '2012-01-01' AND '2012-12-31';
+
+#Create a query to determine which invoices are associated with each sales agent. 
+SELECT emp.LastName, emp.Firstname, inv.InvoiceId
+FROM chinook.Employees emp 
+JOIN chinook.Customers cust 
+ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv 
+ON Inv.CustomerId = cust.CustomerId;
+
+#Determine which sales agent made the most sales in dollars in 2011. 
+SELECT emp.FirstName, emp.LastName,
+ROUND(SUM(Inv.Total), 2) as 'Total Sales' 
+FROM chinook.Employees emp
+JOIN chinook.Customers cust 
+ON cust.SupportRepId = emp.EmployeeId
+JOIN chinook.Invoices Inv 
+ON Inv.CustomerId = cust.CustomerId
+WHERE emp.Title = 'Sales Support Agent' 
+AND Inv.InvoiceDate LIKE '2011%' 
+GROUP BY emp.FirstName
+ORDER BY (round(sum(Inv.Total), 2))  DESC LIMIT 1;
+
+#Show all customers that are not located in Canada.
+SELECT FirstName, LastName, CustomerId, Country 
+FROM chinook.customers 
+WHERE Country <> "Canada";
+
+#List all the invoices from the customers in the USA only. 
+SELECT cust.FirstName, cust.LastName, inv.InvoiceId, inv.BillingCountry, inv.InvoiceDate
+FROM chinook.invoices as inv 
+LEFT JOIN chinook.customers as cust 
+on inv.CustomerId = cust.CustomerId 
+WHERE inv.BillingCountry = "USA";
+
+#Determine who the IT staff is. 
+SELECT * 
+FROM chinook.Employees
+WHERE Title = "IT Staff" ;
